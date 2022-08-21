@@ -1,40 +1,22 @@
 package main
 
-import "C"
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
-	"net/http"
-	"strings"
+	"gohub/bootstrap"
 )
 
 func main() {
 	// Initialization gin instance
-	r := gin.Default()
+	router := gin.New()
 
-	// Registration middleware
-	r.Use(gin.Logger(), gin.Recovery())
+	// Initialization and binding route
+	bootstrap.SetupRoute(router)
 
-	// Registration route
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"data": "Hello Gin is working!",
-		})
-	})
-
-	// Processing 404 request
-	r.NoRoute(func(c *gin.Context) {
-		// Get Accept value from header
-		acceptString := c.Request.Header.Get("Accept")
-		if strings.Contains(acceptString, "text/html") {
-			c.String(http.StatusNotFound, "Page not found 404")
-		} else {
-			c.JSON(http.StatusNotFound, gin.H{
-				"error_code":    404,
-				"error_message": "Page not found 404",
-			})
-		}
-	})
-
-	// Running server on 8000 port
-	r.Run(":8000")
+	// Running server on 3000 port
+	err := router.Run(":3000")
+	if err != nil {
+		// Error exception
+		fmt.Println(err.Error())
+	}
 }
