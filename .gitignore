@@ -97,3 +97,6 @@ __debug_bin
 .sass-cache/*
 node_modules/
 
+
+# Ignore .env file
+.env
