@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	v1 "gohub/app/http/controllers/api/v1"
 	"gohub/app/models/user"
@@ -19,21 +18,8 @@ func (sc *SignupController) IsPhoneExist(c *gin.Context) {
 	// Int Request object
 	request := requests.SignupPhoneExistRequest{}
 
-	if err := c.ShouldBindJSON(&request); err != nil {
-		// Parsing faire return 422 status code
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
-			"error": err.Error(),
-		})
-		// Print error
-		fmt.Println(err.Error())
-		return
-	}
-
-	errs := requests.ValidateSignupPhoneExist(&request, c)
-	if len(errs) > 0 {
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
-			"errors": errs,
-		})
+	// Validation check phone exists
+	if ok := requests.Validate(c, &request, requests.SignupPhoneExist); !ok {
 		return
 	}
 
@@ -47,19 +33,8 @@ func (sc *SignupController) IsEmailExist(c *gin.Context) {
 	// Init request object
 	request := requests.SignupEmailExistsRequest{}
 
-	if err := c.ShouldBindJSON(&request); err != nil {
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
-			"error": err.Error(),
-		})
-		fmt.Println(err.Error())
-		return
-	}
-
-	errs := requests.ValidateSignupEmailExist(&request, c)
-	if len(errs) > 0 {
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
-			"error": errs,
-		})
+	// Validation email exist
+	if ok := requests.Validate(c, &request, requests.SignupEmailExist); !ok {
 		return
 	}
 
