@@ -21,7 +21,10 @@ func RegisterAPIRouters(r *gin.Engine) {
 		authGroup := v1.Group("auth")
 		{
 			signup := new(auth.SignupController)
+			// Check phone is registered
 			authGroup.POST("/signup/phone/exist", signup.IsPhoneExist)
+			// Check email is registered
+			authGroup.POST("/signup/email/exist", signup.IsEmailExist)
 		}
 	}
 }
