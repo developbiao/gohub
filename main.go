@@ -25,6 +25,12 @@ func main() {
 	// Initialization logger
 	bootstrap.SetupLogger()
 
+	// Set gin running mode, support debug, release, test
+	// Release mode block debug information officer recommend use on production
+	// Default set release
+	// In special cases you can manually change to debug mode
+	gin.SetMode(gin.ReleaseMode)
+
 	// Initialization database
 	bootstrap.SetupDB()
 
