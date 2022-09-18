@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"encoding/json"
 	"fmt"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -101,4 +102,104 @@ func getLogWriter(filename string, maxSize, maxBackup, maxAge int,
 		// Production log
 		return zapcore.AddSync(lumberJackLogger)
 	}
+}
+
+// Dump dump log
+// First parameter using json.Marshal render, second is option
+func Dump(value interface{}, msg ...string) {
+	valueString := jsonString(value)
+	if len(msg) > 0 {
+		Logger.Warn("Dump", zap.String(msg[0], valueString))
+	} else {
+		Logger.Warn("Dump", zap.String("data", valueString))
+	}
+}
+
+// LogIf like err != nil record log
+func LogIf(err error) {
+	if err != nil {
+		Logger.Error("Error Occurred:", zap.Error(err))
+	}
+}
+
+// Debug debug log structure output detail log
+// e.g: logger.Debug("Database", zap.String("sql", sql))
+func Debug(moduleName string, fields ...zap.Field) {
+	Logger.Debug(moduleName, fields...)
+}
+
+// Info information log
+func Info(moduleName string, fields ...zap.Field) {
+	Logger.Info(moduleName, fields...)
+}
+
+// Warn warning log
+func Warn(moduleName string, fields ...zap.Field) {
+	Logger.Warn(moduleName, fields...)
+}
+
+// Error error log
+func Error(module string, fields ...zap.Field) {
+	Logger.Error(module, fields...)
+}
+
+// Fatal fatal log
+func Fatal(module string, fields ...zap.Field) {
+	Logger.Error(module, fields...)
+}
+
+// DebugString record a debug log
+// e.g: logger.DebugString("SMS", "SMS Content")
+func DebugString(moduleName, name, msg string) {
+	Logger.Debug(moduleName, zap.String(name, msg))
+}
+
+// InfoString record information log
+func InfoString(moduleName, name, msg string) {
+	Logger.Info(moduleName, zap.String(name, msg))
+}
+
+// WarnString record warning log
+func WarnString(moduleName, name, msg string) {
+	Logger.Warn(moduleName, zap.String(name, msg))
+}
+
+// ErrorString record error log
+func ErrorString(moduleName, name, msg string) {
+	Logger.Error(moduleName, zap.String(name, msg))
+}
+
+// FatalString record fatal log
+func FatalString(moduleName, name, msg string) {
+	Logger.Fatal(moduleName, zap.String(name, msg))
+}
+
+// DebugJSON
+// e.g:
+// logger.DebugJSON("Auth", "read login user", auth.CurrentUser())
+func DebugJSON(moduleName, name string, value interface{}) {
+	Logger.Debug(moduleName, zap.String(name, jsonString(value)))
+}
+
+func InfoJSON(moduleName, name string, value interface{}) {
+	Logger.Info(moduleName, zap.String(name, jsonString(value)))
+}
+
+func WarnJSON(moduleName, name string, value interface{}) {
+	Logger.Warn(moduleName, zap.String(name, jsonString(value)))
+}
+
+func errorJSON(moduleName, name string, value interface{}) {
+	Logger.Error(moduleName, zap.String(name, jsonString(value)))
+}
+func FatalJSON(moduleName, name string, value interface{}) {
+	Logger.Fatal(moduleName, zap.String(name, jsonString(value)))
+}
+
+func jsonString(value interface{}) string {
+	b, err := json.Marshal(value)
+	if err != nil {
+		Logger.Error("Logger", zap.String("JSON marshal error", err.Error()))
+	}
+	return string(b)
 }
