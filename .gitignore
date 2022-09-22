@@ -83,7 +83,7 @@ Thumbs.db
 
 # IDE 和编辑器 #
 ######################
-.idea/
+.idea
 /go_build_*
 out/
 .vscode/
