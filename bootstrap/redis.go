@@ -3,6 +3,7 @@ package bootstrap
 import (
 	"fmt"
 	"gohub/pkg/config"
+	"gohub/pkg/logger"
 	"gohub/pkg/redis"
 )
 
@@ -14,4 +15,9 @@ func SetupRedis() {
 		config.GetString("redis.password"),
 		config.GetInt("redis.database"),
 	)
+	if err := redis.Redis.Ping(); err != nil {
+		logger.ErrorString("Redis", "Connect error", err.Error())
+	} else {
+		logger.InfoString("Redis", "Connect success 222", "success")
+	}
 }

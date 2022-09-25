@@ -2,7 +2,7 @@ package redis
 
 import (
 	"context"
-	"github.com/go-redis/redis/v8"
+	redis "github.com/go-redis/redis/v8"
 	"gohub/pkg/logger"
 	"sync"
 	"time"
@@ -29,7 +29,12 @@ func ConnectRedis(address string, username string, password string, db int) {
 
 // NewClient new redis client
 func NewClient(address string, username string, password string, db int) *RedisClient {
+	// Init RedisClient instance
 	rds := &RedisClient{}
+
+	// Using default context
+	rds.Context = context.Background()
+
 	// Using default context
 	rds.Client = redis.NewClient(&redis.Options{
 		Addr:     address,
@@ -37,6 +42,10 @@ func NewClient(address string, username string, password string, db int) *RedisC
 		Password: password,
 		DB:       db,
 	})
+
+	// Test ping
+	err := rds.Ping()
+	logger.LogIf(err)
 
 	return rds
 }
