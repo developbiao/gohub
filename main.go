@@ -34,6 +34,9 @@ func main() {
 	// Initialization database
 	bootstrap.SetupDB()
 
+	// Initialization redis
+	bootstrap.SetupRedis()
+
 	// Initialization gin instance
 	router := gin.New()
 
