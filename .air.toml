@@ -25,7 +25,7 @@ tmp_dir = "tmp"
   # 监控系统链接的目录
   follow_symlink = false
   # 自定义参数，可以添加额外的编译标识，例如添加 GIN_MODE=release
-  full_bin = ""
+  full_bin = "APP_ENV=dev APP_USER=air ./tmp/main"
   # 监听以下指定目录的文件
   include_dir = []
   # 监听以下文件扩展名的文件.

@@ -43,6 +43,9 @@ func main() {
 	// Initialization and binding route
 	bootstrap.SetupRoute(router)
 
+	//logger.Dump(captcha.NewCaptcha().VerifyCaptcha("qaDAO2ccO0SSbXYXdu9G", "723469"), "Correct answer")
+	//logger.Dump(captcha.NewCaptcha().VerifyCaptcha("qaDAO2ccO0SSbXYXdu9G", "0000"), "Error answer")
+
 	// Running server on 3000 port
 	err := router.Run(":" + config.Get("app.port"))
 	if err != nil {
