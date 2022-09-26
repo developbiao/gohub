@@ -18,6 +18,6 @@ func SetupRedis() {
 	if err := redis.Redis.Ping(); err != nil {
 		logger.ErrorString("Redis", "Connect error", err.Error())
 	} else {
-		logger.InfoString("Redis", "Connect success 222", "success")
+		logger.InfoString("Redis", "Connect success 233", "success")
 	}
 }
