@@ -65,7 +65,7 @@ func (rds RedisClient) Set(key string, value interface{}, expiration time.Durati
 	return true
 }
 
-// Get get value from cache
+// Get value from cache
 func (rds RedisClient) Get(key string) string {
 	result, err := rds.Client.Get(rds.Context, key).Result()
 	if err != nil {

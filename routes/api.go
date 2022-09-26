@@ -25,6 +25,10 @@ func RegisterAPIRouters(r *gin.Engine) {
 			authGroup.POST("/signup/phone/exist", signup.IsPhoneExist)
 			// Check email is registered
 			authGroup.POST("/signup/email/exist", signup.IsEmailExist)
+
+			// Show captcha
+			vcc := new(auth.VerifyCodeController)
+			authGroup.POST("/verify-codes/captcha", vcc.ShowCaptcha)
 		}
 	}
 }
