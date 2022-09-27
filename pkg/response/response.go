@@ -93,7 +93,7 @@ func Error(c *gin.Context, err error, msg ...string) {
 // ValidationError response 422 process validation form data
 func ValidationError(c *gin.Context, errors map[string][]string) {
 	c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
-		"message": "Request validation reject, please check errors.",
+		"message": "Request validation parameters failed, please check errors.",
 		"errors":  errors,
 	})
 }
