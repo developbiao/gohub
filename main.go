@@ -7,6 +7,7 @@ import (
 	"gohub/bootstrap"
 	btsConfig "gohub/config"
 	"gohub/pkg/config"
+	"gohub/pkg/sms"
 )
 
 func init() {
@@ -49,9 +50,14 @@ func main() {
 
 	// Send sms test
 	//sms.NewSMS().Send("1333000000", sms.Message{
-	//	Template: config.GetString("sms.aliyun.tmeplate.code"),
+	//	Template: config.GetString("sms.aliyun.template.code"),
 	//	Data:     map[string]string{"code": "123456"},
 	//})
+
+	sms.NewSMS().Send("13330000000", sms.Message{
+		Template: config.GetString("sms.test.template.code"),
+		Data:     map[string]string{"code": "123456"},
+	})
 
 	// Running server on 3000 port
 	err := router.Run(":" + config.Get("app.port"))

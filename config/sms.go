@@ -12,6 +12,12 @@ func init() {
 				"sign_name":         config.Env("SMS_ALIYUN_SIGN_NAME", "阿里云短信测试"),
 				"template_code":     config.Env("SMS_ALIYUN_TEMPLATE_CODE", "SMS_123456"),
 			},
+			// For test without third part
+			"test": map[string]interface{}{
+				"app_id":        config.Env("SMS_TEST_APP_ID"),
+				"app_key":       config.Env("SMS_TEST_APP_KEY"),
+				"template_code": config.Env("SMS_TEST_TEMPLATE_CODE", "SMS_123456"),
+			},
 		}
 	})
 }
