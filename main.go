@@ -7,7 +7,8 @@ import (
 	"gohub/bootstrap"
 	btsConfig "gohub/config"
 	"gohub/pkg/config"
-	"gohub/pkg/sms"
+	"gohub/pkg/logger"
+	"gohub/pkg/verifycode"
 )
 
 func init() {
@@ -44,6 +45,18 @@ func main() {
 	// Initialization and binding route
 	bootstrap.SetupRoute(router)
 
+	// Test module verify is work
+	testModule()
+
+	// Running server on 3000 port
+	err := router.Run(":" + config.Get("app.port"))
+	if err != nil {
+		// Error exception
+		fmt.Println(err.Error())
+	}
+}
+
+func testModule() {
 	//  Verify captcha test
 	//logger.Dump(captcha.NewCaptcha().VerifyCaptcha("qaDAO2ccO0SSbXYXdu9G", "723469"), "Correct answer")
 	//logger.Dump(captcha.NewCaptcha().VerifyCaptcha("qaDAO2ccO0SSbXYXdu9G", "0000"), "Error answer")
@@ -53,16 +66,14 @@ func main() {
 	//	Template: config.GetString("sms.aliyun.template.code"),
 	//	Data:     map[string]string{"code": "123456"},
 	//})
+	//
+	//sms.NewSMS().Send("13330000000", sms.Message{
+	//	Template: config.GetString("sms.test.template.code"),
+	//	Data:     map[string]string{"code": "123456"},
+	//})
 
-	sms.NewSMS().Send("13330000000", sms.Message{
-		Template: config.GetString("sms.test.template.code"),
-		Data:     map[string]string{"code": "123456"},
-	})
-
-	// Running server on 3000 port
-	err := router.Run(":" + config.Get("app.port"))
-	if err != nil {
-		// Error exception
-		fmt.Println(err.Error())
+	verifycode.NewVerifyCode().SendSMS("13330000000")
+	if verifycode.NewVerifyCode().CheckAnswer("13330000000", "123456") {
+		logger.DebugString("verifycode", "verify success", "123456")
 	}
 }
