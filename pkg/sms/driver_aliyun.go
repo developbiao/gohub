@@ -6,7 +6,7 @@ import (
 	"gohub/pkg/logger"
 )
 
-// Aliyun implment sms.Driver interface
+// Aliyun implement sms.Driver interface
 type Aliyun struct{}
 
 func (a *Aliyun) Send(phone string, message Message, config map[string]string) bool {

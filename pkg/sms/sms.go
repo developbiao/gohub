@@ -28,7 +28,7 @@ var internalSMS *SMS
 func NewSMS() *SMS {
 	once.Do(func() {
 		internalSMS = &SMS{
-			Driver: nil,
+			Driver: &Aliyun{},
 		}
 	})
 	return internalSMS

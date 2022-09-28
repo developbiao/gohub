@@ -43,8 +43,15 @@ func main() {
 	// Initialization and binding route
 	bootstrap.SetupRoute(router)
 
+	//  Verify captcha test
 	//logger.Dump(captcha.NewCaptcha().VerifyCaptcha("qaDAO2ccO0SSbXYXdu9G", "723469"), "Correct answer")
 	//logger.Dump(captcha.NewCaptcha().VerifyCaptcha("qaDAO2ccO0SSbXYXdu9G", "0000"), "Error answer")
+
+	// Send sms test
+	//sms.NewSMS().Send("1333000000", sms.Message{
+	//	Template: config.GetString("sms.aliyun.tmeplate.code"),
+	//	Data:     map[string]string{"code": "123456"},
+	//})
 
 	// Running server on 3000 port
 	err := router.Run(":" + config.Get("app.port"))
