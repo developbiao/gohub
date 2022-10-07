@@ -29,6 +29,8 @@ func RegisterAPIRouters(r *gin.Engine) {
 			// Show captcha
 			vcc := new(auth.VerifyCodeController)
 			authGroup.POST("/verify-codes/captcha", vcc.ShowCaptcha)
+			// Using phone send sms code
+			authGroup.POST("/verify-codes/phone", vcc.SendUsingPhone)
 		}
 	}
 }

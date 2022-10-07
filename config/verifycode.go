@@ -19,5 +19,4 @@ func init() {
 			"debug_email_suffix": "@testing.com",
 		}
 	})
-
 }
