@@ -8,7 +8,6 @@ import (
 	btsConfig "gohub/config"
 	"gohub/pkg/config"
 	"gohub/pkg/logger"
-	"gohub/pkg/verifycode"
 )
 
 func init() {
@@ -72,8 +71,9 @@ func testModule() {
 	//	Data:     map[string]string{"code": "123456"},
 	//})
 
-	verifycode.NewVerifyCode().SendSMS("13330000000")
-	if verifycode.NewVerifyCode().CheckAnswer("13330000000", "123456") {
-		logger.DebugString("verifycode", "verify success", "123456")
-	}
+	//verifycode.NewVerifyCode().SendSMS("13330000000")
+	//if verifycode.NewVerifyCode().CheckAnswer("13330000000", "123456") {
+	//	logger.DebugString("verifycode", "verify success", "123456")
+	//}
+	logger.DebugString("Test Module finished", "test module", "ok")
 }

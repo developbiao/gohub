@@ -41,3 +41,18 @@ func (vc *VerifyCodeController) SendUsingPhone(c *gin.Context) {
 		response.Success(c)
 	}
 }
+
+// SendUsingEmail using email send code
+func (vc *VerifyCodeController) SendUsingEmail(c *gin.Context) {
+	request := requests.VerifyCodeEmailRequest{}
+	if ok := requests.Validate(c, &request, requests.VerifyCodeEmail); !ok {
+		return
+	}
+
+	// Send email
+	if err := verifycode.NewVerifyCode().SendEmail(request.Email); err != nil {
+		response.Abort500(c, "Send email failed")
+	} else {
+		response.Success(c)
+	}
+}

@@ -5,7 +5,7 @@ import "gohub/pkg/config"
 func init() {
 	config.Add("mail", func() map[string]interface{} {
 		return map[string]interface{}{
-			"stmp": map[string]interface{}{
+			"smtp": map[string]interface{}{
 				"host":     config.Env("MAIL_HOST", "localhost"),
 				"port":     config.Env("MAIL_PORT", 1025),
 				"username": config.Env("MAIL_USERNAME", ""),

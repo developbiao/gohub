@@ -1,10 +1,12 @@
 package verifycode
 
 import (
+	"fmt"
 	"gohub/pkg/app"
 	"gohub/pkg/config"
 	"gohub/pkg/helpers"
 	"gohub/pkg/logger"
+	"gohub/pkg/mail"
 	"gohub/pkg/redis"
 	"gohub/pkg/sms"
 	"strings"
@@ -68,4 +70,29 @@ func (vc *VerifyCode) CheckAnswer(key string, answer string) bool {
 		return true
 	}
 	return vc.Store.Verify(key, answer, false)
+}
+
+// SendEmail send email captcha code
+func (vc *VerifyCode) SendEmail(email string) error {
+	// Generate verify code
+	code := vc.generateVerifyCode(email)
+
+	// Easement for local debug
+	if !app.IsProduction() &&
+		strings.HasSuffix(email, config.GetString("verifycode.debug_email_suffix")) {
+		logger.DebugString("send email", "SUFFIX DEBUG", config.GetString("verifycode.debug_email_suffix"))
+		return nil
+	}
+
+	content := fmt.Sprintf("<h3>Your Email Captcha code is %v </h3>", code)
+	mail.NewMailer().Send(mail.Email{
+		From: mail.From{
+			Address: config.GetString("mail.from.address"),
+			Name:    config.GetString("mail.from.name"),
+		},
+		To:      []string{email},
+		Subject: "Email Captcha code",
+		HTML:    []byte(content),
+	})
+	return nil
 }
