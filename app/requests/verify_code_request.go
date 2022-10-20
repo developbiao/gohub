@@ -3,7 +3,7 @@ package requests
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/thedevsaddam/govalidator"
-	"gohub/app/requests/validator"
+	"gohub/app/requests/validators"
 )
 
 type VerifyCodePhoneRequest struct {
@@ -41,7 +41,7 @@ func VerifyCodePhone(data interface{}, c *gin.Context) map[string][]string {
 	}
 	errs := validate(data, rules, messages)
 	_data := data.(*VerifyCodePhoneRequest)
-	errs = validator.ValidateCaptcha(_data.CaptchaID, _data.CaptchaAnswer, errs)
+	errs = validators.ValidateCaptcha(_data.CaptchaID, _data.CaptchaAnswer, errs)
 	return errs
 }
 
@@ -66,6 +66,6 @@ func VerifyCodeEmail(data interface{}, c *gin.Context) map[string][]string {
 	}
 	errs := validate(data, rules, messages)
 	_data := data.(*VerifyCodeEmailRequest)
-	errs = validator.ValidateCaptcha(_data.CaptchaID, _data.CaptchaAnswer, errs)
+	errs = validators.ValidateCaptcha(_data.CaptchaID, _data.CaptchaAnswer, errs)
 	return errs
 }

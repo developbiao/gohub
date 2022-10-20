@@ -1,6 +1,9 @@
 package user
 
-import "gohub/app/models"
+import (
+	"gohub/app/models"
+	"gohub/pkg/hash"
+)
 
 type User struct {
 	models.BaseModel
@@ -11,4 +14,9 @@ type User struct {
 	Password string `json:"-"`
 
 	models.CommonTimestampsField
+}
+
+// ComparePassword check password is match
+func (userModel *User) ComparePassword(_password string) bool {
+	return hash.BcryptCheck(_password, userModel.Password)
 }
