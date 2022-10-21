@@ -65,8 +65,8 @@ func (vc *VerifyCode) generateVerifyCode(key string) string {
 // CheckAnswer verify code is correct
 func (vc *VerifyCode) CheckAnswer(key string, answer string) bool {
 	logger.DebugJSON("verifycode", "CheckAnswer", map[string]string{key: answer})
-	if !app.IsProduction() &&
-		strings.HasPrefix(key, config.GetString("verifycode.debug_phone_prefix")) {
+	if !app.IsProduction() && strings.HasPrefix(key, config.GetString("verifycode.debug_phone_prefix")) ||
+		config.GetString("verifycode.debug_code") == answer {
 		return true
 	}
 	return vc.Store.Verify(key, answer, false)

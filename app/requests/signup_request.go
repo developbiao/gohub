@@ -60,7 +60,7 @@ func SignupEmailExist(data interface{}, c *gin.Context) map[string][]string {
 
 func SignupUsingPhone(data interface{}, c *gin.Context) map[string][]string {
 	rules := govalidator.MapData{
-		"phone":            []string{"required", "digits:11", "not_exist:users,phone"},
+		"phone":            []string{"required", "digits:11", "not_exists:users,phone"},
 		"name":             []string{"required", "alpha_num", "between:3,20", "not_exists:users,name"},
 		"password":         []string{"required", "min:6"},
 		"password_confirm": []string{"required"},
@@ -94,6 +94,8 @@ func SignupUsingPhone(data interface{}, c *gin.Context) map[string][]string {
 
 	_data := data.(*SignupUsingPhoneRequest)
 	errs = validators.ValidatePasswordConfirm(_data.Password, _data.PasswordConfirm, errs)
+
+	errs = validators.ValidateVerifyCode(_data.Phone, _data.VerifyCode, errs)
 
 	return errs
 }
