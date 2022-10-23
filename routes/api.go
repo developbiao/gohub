@@ -27,6 +27,8 @@ func RegisterAPIRouters(r *gin.Engine) {
 			authGroup.POST("/signup/email/exist", signup.IsEmailExist)
 			// Using phone registration
 			authGroup.POST("/signup/using-phone", signup.SignupUsingPhone)
+			// Using email registration
+			authGroup.POST("/signup/using-email", signup.SignupUsingEmail)
 
 			// Show captcha
 			vcc := new(auth.VerifyCodeController)
