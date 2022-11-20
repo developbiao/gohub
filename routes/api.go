@@ -43,6 +43,9 @@ func RegisterAPIRouters(r *gin.Engine) {
 			authGroup.POST("/login/using-phone", lgc.LoginByPhone)
 			// Using password login
 			authGroup.POST("/login/using-password", lgc.LoginByPassword)
+
+			// Refresh token
+			authGroup.POST("/login/refresh-token", lgc.RefreshToken)
 		}
 	}
 }
