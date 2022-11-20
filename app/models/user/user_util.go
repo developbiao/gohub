@@ -25,8 +25,8 @@ func GetByPhone(phone string) (userModel User) {
 // GetByMulti find user by phone/email/name
 func GetByMulti(loginID string) (userModel User) {
 	database.DB.Where("phone = ?", loginID).
-		Where("email = ?", loginID).
-		Where("name = ?", loginID).
+		Or("email = ?", loginID).
+		Or("name = ?", loginID).
 		First(&userModel)
 	return
 }

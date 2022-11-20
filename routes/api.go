@@ -41,6 +41,8 @@ func RegisterAPIRouters(r *gin.Engine) {
 			// Using phone login
 			lgc := new(auth.LoginController)
 			authGroup.POST("/login/using-phone", lgc.LoginByPhone)
+			// Using password login
+			authGroup.POST("/login/using-password", lgc.LoginByPassword)
 		}
 	}
 }
