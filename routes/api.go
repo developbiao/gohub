@@ -37,6 +37,10 @@ func RegisterAPIRouters(r *gin.Engine) {
 			authGroup.POST("/verify-codes/phone", vcc.SendUsingPhone)
 			// Using email send code
 			authGroup.POST("/verify-codes/email", vcc.SendUsingEmail)
+
+			// Using phone login
+			lgc := new(auth.LoginController)
+			authGroup.POST("/login/using-phone", lgc.LoginByPhone)
 		}
 	}
 }
