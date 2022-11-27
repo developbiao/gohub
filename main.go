@@ -4,10 +4,12 @@ import (
 	"flag"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"gohub/app/http/middlewares"
 	"gohub/bootstrap"
 	btsConfig "gohub/config"
 	"gohub/pkg/config"
 	"gohub/pkg/logger"
+	"net/http"
 )
 
 func init() {
@@ -49,6 +51,11 @@ func main() {
 	//	userModel := auth.CurrentUser(c)
 	//	response.Data(c, userModel)
 	//})
+
+	// Guest middleware test
+	router.GET("/test_guest", middlewares.GuestJWT(), func(c *gin.Context) {
+		c.String(http.StatusOK, "Hello guest")
+	})
 
 	// Test module verify is work
 	testModule()
