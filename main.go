@@ -44,6 +44,12 @@ func main() {
 	// Initialization and binding route
 	bootstrap.SetupRoute(router)
 
+	// Test get user form context
+	//router.GET("/test_auth", middlewares.AuthJWT(), func(c *gin.Context) {
+	//	userModel := auth.CurrentUser(c)
+	//	response.Data(c, userModel)
+	//})
+
 	// Test module verify is work
 	testModule()
 
