@@ -25,3 +25,9 @@ func (userModel *User) ComparePassword(_password string) bool {
 func (userModel *User) Create() {
 	database.DB.Create(&userModel)
 }
+
+// Save user record return rows affected
+func (userModel *User) Save() (rowsAffected int64) {
+	result := database.DB.Save(&userModel)
+	return result.RowsAffected
+}
