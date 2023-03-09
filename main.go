@@ -38,9 +38,10 @@ func main() {
 		},
 	}
 
-	// Register sub command
+	// Register sub commands
 	rootCmd.AddCommand(
 		cmd.CmdServe,
+		cmd.CmdKey,
 	)
 
 	// Configuration default run web server
