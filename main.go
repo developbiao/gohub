@@ -42,6 +42,7 @@ func main() {
 	rootCmd.AddCommand(
 		cmd.CmdServe,
 		cmd.CmdKey,
+		cmd.CmdPlay,
 	)
 
 	// Configuration default run web server
