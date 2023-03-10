@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"gohub/app/cmd"
+	cmdmake "gohub/app/cmd/make"
 	"gohub/bootstrap"
 	btsConfig "gohub/config"
 	"gohub/pkg/config"
@@ -43,6 +44,7 @@ func main() {
 		cmd.CmdServe,
 		cmd.CmdKey,
 		cmd.CmdPlay,
+		cmdmake.CmdMake,
 	)
 
 	// Configuration default run web server

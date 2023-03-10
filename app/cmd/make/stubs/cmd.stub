@@ -1,0 +1,25 @@
+package cmd
+
+import (
+    "errors"
+    "gohub/pkg/console"
+
+    "github.com/spf13/cobra"
+)
+
+var Cmd{{StructName}} = &cobra.Command{
+    Use:   "{{PackageName}}",
+    Short:  "HERE PUTS THE COMMAND DESCRIPTION",
+    Run: run{{StructName}},
+    Args:  cobra.ExactArgs(1), // 1 parameter must be passwd
+}
+
+func run{{StructName}}(cmd *cobra.Command, args []string) {
+
+    console.Success("This is success message")
+    console.Warning("This is warning message")
+    console.Error("This is error message")
+    console.Warning("Terminal output please use english")
+    console.Exit("exit method exist process and print")
+    console.ExitIf(errors.New("when err != nil will be exit"))
+}
