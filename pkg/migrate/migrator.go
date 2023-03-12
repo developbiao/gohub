@@ -2,6 +2,7 @@
 package migrate
 
 import (
+	"fmt"
 	"gohub/pkg/console"
 	"gohub/pkg/database"
 	"gohub/pkg/file"
@@ -36,7 +37,7 @@ func NewMigrator() *Migrator {
 
 // CreateMigrationsTable check and create migrations table
 func (migrator *Migrator) createMigrationsTable() {
-	migration := Migrator{}
+	migration := Migration{}
 
 	// If not exist create migrations table
 	if !migrator.Migrator.HasTable(&migration) {
@@ -92,6 +93,9 @@ func (migrator *Migrator) readAllMigrationFiles() []MigrationFile {
 	files, err := os.ReadDir(migrator.Folder)
 	console.ExitIf(err)
 
+	console.Warning("Debug read all migration files")
+	fmt.Println("Files", files)
+
 	var migrateFiles []MigrationFile
 	for _, f := range files {
 		// Remove file extension ".go"
@@ -102,9 +106,10 @@ func (migrator *Migrator) readAllMigrationFiles() []MigrationFile {
 
 		// Check file is available append to array
 		if len(mfile.FileName) > 0 {
-			migrationFiles = append(migrateFiles, mfile)
+			migrateFiles = append(migrateFiles, mfile)
 		}
 	}
+	fmt.Println("Match Files", migrateFiles)
 	// Return sorted array
 	return migrateFiles
 }
