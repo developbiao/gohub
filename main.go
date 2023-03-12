@@ -45,6 +45,7 @@ func main() {
 		cmd.CmdKey,
 		cmd.CmdPlay,
 		cmdmake.CmdMake,
+		cmd.CmdMigrate,
 	)
 
 	// Configuration default run web server

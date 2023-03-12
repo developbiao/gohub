@@ -36,5 +36,5 @@ func ExitIf(err error) {
 
 // colorOut  ANSI code for style
 func colorOut(message, color string) {
-	fmt.Fprintf(os.Stdout, ansi.Color(message, color))
+	fmt.Fprintf(os.Stdout, ansi.Color(message+"\n", color))
 }
