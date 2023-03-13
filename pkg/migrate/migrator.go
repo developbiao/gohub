@@ -127,3 +127,45 @@ func (migrator *Migrator) runUpMigration(mfile MigrationFile, batch int) {
 	err := migrator.DB.Create(&Migration{Migration: mfile.FileName, Batch: batch}).Error
 	console.ExitIf(err)
 }
+
+// Rollback rollback to previous version
+func (migrator *Migrator) Rollback() {
+	// Get last batch migration data
+	lastMigration := Migration{}
+	migrator.DB.Order("id DESC").First(&lastMigration)
+	var migrations []Migration
+	migrator.DB.Where("batch = ?", lastMigration.Batch).Order("id DESC").Find(&migrations)
+
+	// Rollback to last version
+	if !migrator.rollbackMigrations(migrations) {
+		console.Success("[migrations] table is empty, nothing to rollback.")
+	}
+}
+
+// rollbackMigrations executing rollback
+func (migrator *Migrator) rollbackMigrations(migrations []Migration) bool {
+
+	// Flag for is executed
+	runed := false
+
+	for _, _migration := range migrations {
+		// Friendly notice
+		console.Warning("rollback " + _migration.Migration)
+
+		// Executing rollback operator
+		mfile := getMigrationFile(_migration.Migration)
+
+		// Executing migration down method
+		if mfile.Down != nil {
+			mfile.Down(database.DB.Migrator(), database.SQLDB)
+		}
+		runed = true
+
+		// Rollback success delete record
+		migrator.DB.Delete(&_migration)
+
+		// Output success
+		console.Success("Finished " + mfile.FileName)
+	}
+	return runed
+}
