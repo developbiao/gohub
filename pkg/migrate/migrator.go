@@ -2,7 +2,6 @@
 package migrate
 
 import (
-	"fmt"
 	"gohub/pkg/console"
 	"gohub/pkg/database"
 	"gohub/pkg/file"
@@ -93,9 +92,6 @@ func (migrator *Migrator) readAllMigrationFiles() []MigrationFile {
 	files, err := os.ReadDir(migrator.Folder)
 	console.ExitIf(err)
 
-	console.Warning("Debug read all migration files")
-	fmt.Println("Files", files)
-
 	var migrateFiles []MigrationFile
 	for _, f := range files {
 		// Remove file extension ".go"
@@ -109,7 +105,6 @@ func (migrator *Migrator) readAllMigrationFiles() []MigrationFile {
 			migrateFiles = append(migrateFiles, mfile)
 		}
 	}
-	fmt.Println("Match Files", migrateFiles)
 	// Return sorted array
 	return migrateFiles
 }
@@ -144,7 +139,6 @@ func (migrator *Migrator) Rollback() {
 
 // rollbackMigrations executing rollback
 func (migrator *Migrator) rollbackMigrations(migrations []Migration) bool {
-
 	// Flag for is executed
 	runed := false
 
@@ -188,5 +182,22 @@ func (migrator *Migrator) Refresh() {
 	// Rollback all data
 	migrator.Reset()
 	// Again executing up
+	migrator.Up()
+}
+
+// Fresh  drop all tables  and rebuild
+func (migrator *Migrator) Fresh() {
+	// Get database name
+	dbname := database.CurrentDatabase()
+
+	// Delete All tables
+	err := database.DeleteAllTables()
+	console.ExitIf(err)
+	console.Success("cleanup database " + dbname)
+
+	// Recreate migration table
+	migrator.createMigrationsTable()
+
+	// Re migration up
 	migrator.Up()
 }
