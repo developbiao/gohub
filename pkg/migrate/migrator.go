@@ -169,3 +169,24 @@ func (migrator *Migrator) rollbackMigrations(migrations []Migration) bool {
 	}
 	return runed
 }
+
+// Reset reset all migrations
+func (migrator *Migrator) Reset() {
+	var migrations []Migration
+
+	// Get migration records by sort date
+	migrator.DB.Order("id DESC").Find(&migrations)
+
+	// Executing rollback all data
+	if !migrator.rollbackMigrations(migrations) {
+		console.Success("[migrations] table is empty, nothing to reset.")
+	}
+}
+
+// Refresh rollback all migration and executing all migrations
+func (migrator *Migrator) Refresh() {
+	// Rollback all data
+	migrator.Reset()
+	// Again executing up
+	migrator.Up()
+}
