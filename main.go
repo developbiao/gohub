@@ -21,7 +21,7 @@ func main() {
 
 	// Application Entrance
 	var rootCmd = &cobra.Command{
-		Use:   "Gohub",
+		Use:   "gohub",
 		Short: "A simple web server project",
 		Long:  `Default will run "server" command, you can use "-h" flag to see all subcommands`,
 		PersistentPreRun: func(command *cobra.Command, args []string) {
