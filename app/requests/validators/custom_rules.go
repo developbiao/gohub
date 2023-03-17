@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"github.com/thedevsaddam/govalidator"
 	"gohub/pkg/database"
+	"strconv"
 	"strings"
+	"unicode/utf8"
 )
 
 func init() {
@@ -49,4 +51,32 @@ func init() {
 		// Validate pass
 		return nil
 	})
+
+	// max_cn:8 chinese length maximum is 8
+	govalidator.AddCustomRule("max_cn",
+		func(field string, rule string, message string, value interface{}) error {
+			valLength := utf8.RuneCountInString(value.(string))
+			length, _ := strconv.Atoi(strings.TrimPrefix(rule, "max_cn:"))
+			if valLength > length {
+				if message != "" {
+					return errors.New(message)
+				}
+				return fmt.Errorf("Length cannot exceed %d  characters", length)
+			}
+			return nil
+		})
+
+	// min_cn:2 chinese length cannot less than 2
+	govalidator.AddCustomRule("min_cn",
+		func(field string, rule string, message string, value interface{}) error {
+			valLength := utf8.RuneCountInString(value.(string))
+			length, _ := strconv.Atoi(strings.TrimPrefix(rule, "min_cn:"))
+			if valLength < length {
+				if message != "" {
+					return errors.New(message)
+				}
+				return fmt.Errorf("Length cannot less than %d  characters", length)
+			}
+			return nil
+		})
 }
