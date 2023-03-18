@@ -79,4 +79,29 @@ func init() {
 			}
 			return nil
 		})
+
+	// exists:categories,id validation field and value exists?
+	govalidator.AddCustomRule("exists",
+		func(field string, rule string, message string, value interface{}) error {
+			rng := strings.Split(strings.Trim(rule, "exists:"), ",")
+			// First argument is table name example: topics
+			tableName := rng[0]
+
+			// Second argument is field, example: id
+			dbField := rng[1]
+
+			// User request data
+			requestValue := value.(string)
+
+			// Query data
+			var count int64
+			database.DB.Table(tableName).Where(dbField+" =?", requestValue).Count(&count)
+			if count == 0 {
+				if message != "" {
+					return errors.New(message)
+				}
+				return fmt.Errorf("%v Does not exists", requestValue)
+			}
+			return nil
+		})
 }
