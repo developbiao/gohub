@@ -50,6 +50,7 @@ func main() {
 		cmdmake.CmdMake,
 		cmd.CmdMigrate,
 		cmd.CmdDBSeed,
+		cmd.CmdCache,
 	)
 
 	// Configuration default run web server
