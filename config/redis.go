@@ -11,6 +11,8 @@ func init() {
 			"password": config.Env("REDIS_PASSWORD", ""),
 			// Business using with (session, sms, etc)
 			"database": config.Env("REDIS_MAIN_DB", 1),
+			// Cache using 0, Clearing the cache should be not affect the business
+			"database_cache": config.Env("REDIS_CACHE_DB", 0),
 		}
 	})
 }
