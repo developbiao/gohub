@@ -41,7 +41,8 @@ func validate(data interface{}, rules govalidator.MapData, messages govalidator.
 }
 
 // validateFile validate file
-func validateFile(c *gin.Context, data interface{}, rules govalidator.MapData, messages govalidator.MapData) map[string][]string {
+func validateFile(c *gin.Context, data interface{}, rules govalidator.MapData,
+	messages govalidator.MapData) map[string][]string {
 	opts := govalidator.Options{
 		Request:       c.Request,
 		Rules:         rules,
