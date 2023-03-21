@@ -49,3 +49,19 @@ func (ctrl *UsersController) UpdateProfile(c *gin.Context) {
 		response.Abort500(c, "Update Failed, please try again~")
 	}
 }
+
+func (ctrl *UsersController) UpdateEmail(c *gin.Context) {
+	request := requests.UserUpdateEmailRequest{}
+	if ok := requests.Validate(c, &request, requests.UserUpdateEmail); !ok {
+		return
+	}
+
+	currentUser := auth.CurrentUser(c)
+	currentUser.Email = request.Email
+	rowsAffected := currentUser.Save()
+	if rowsAffected > 0 {
+		response.Data(c, currentUser)
+	} else {
+		response.Abort500(c, "Update failed, please try again~")
+	}
+}
