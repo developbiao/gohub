@@ -81,3 +81,26 @@ func (ctrl *UsersController) UpdatePhone(c *gin.Context) {
 		response.Abort500(c, "Update failed, please try again~")
 	}
 }
+
+func (ctrl *UsersController) UpdatePassword(c *gin.Context) {
+	request := requests.UserUpdatePasswordRequest{}
+	if ok := requests.Validate(c, &request, requests.UserUpdatePassword); !ok {
+		return
+	}
+
+	// Validation old password
+	currentUser := auth.CurrentUser(c)
+	_, err := auth.Attempt(currentUser.Name, request.Password)
+	if err != nil {
+		response.Unauthorized(c, "Old password incorrect!")
+		return
+	}
+
+	currentUser.Password = request.NewPasswordConfirm
+	rowsAffected := currentUser.Save()
+	if rowsAffected > 0 {
+		response.Data(c, currentUser)
+	} else {
+		response.Abort500(c, "Update failed, please try again~")
+	}
+}

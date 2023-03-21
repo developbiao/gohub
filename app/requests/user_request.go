@@ -23,6 +23,12 @@ type UserUpdatePhoneRequest struct {
 	VerifyCode string `valid:"verify_code" json:"verify_code,omitempty"`
 }
 
+type UserUpdatePasswordRequest struct {
+	Password           string `valid:"password" json:"password,omitempty"`
+	NewPassword        string `valid:"new_password" json:"new_password,omitempty"`
+	NewPasswordConfirm string `valid:"new_password_confirm" json:"new_password_confirm"`
+}
+
 func UserUpdateProfile(data interface{}, c *gin.Context) map[string][]string {
 	// Query user UID, filter self duplicate name
 	uid := auth.CurrentUID(c)
@@ -114,5 +120,33 @@ func UserUpdatePhone(data interface{}, c *gin.Context) map[string][]string {
 	errs := validate(data, rules, messages)
 	_data := data.(*UserUpdatePhoneRequest)
 	errs = validators.ValidateVerifyCode(_data.Phone, _data.VerifyCode, errs)
+	return errs
+}
+
+func UserUpdatePassword(data interface{}, c *gin.Context) map[string][]string {
+	rules := govalidator.MapData{
+		"password":             []string{"required", "min:6"},
+		"new_password":         []string{"required", "min:6"},
+		"new_password_confirm": []string{"required", "min:6"},
+	}
+	messages := govalidator.MapData{
+		"password": []string{
+			"required:密码是必填项",
+			"min:密码长度需大于 6",
+		},
+		"new_password": []string{
+			"required:新密码是必填项",
+			"min:新密码长度需大于 6",
+		},
+		"new_password_confirm": []string{
+			"required:新确认密码是必填项",
+			"min:新确认密码长度需大于 6",
+		},
+	}
+
+	errs := validate(data, rules, messages)
+	_data := data.(*UserUpdatePasswordRequest)
+	// Ensure confirm password is correct
+	errs = validators.ValidatePasswordConfirm(_data.NewPassword, _data.NewPasswordConfirm, errs)
 	return errs
 }
