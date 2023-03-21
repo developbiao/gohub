@@ -31,3 +31,21 @@ func (ctrl *UsersController) Index(c *gin.Context) {
 		"pager": paper,
 	})
 }
+
+func (ctrl *UsersController) UpdateProfile(c *gin.Context) {
+	request := requests.UserUpdateProfileRequest{}
+	if ok := requests.Validate(c, &request, requests.UserUpdateProfile); !ok {
+		return
+	}
+
+	currentUser := auth.CurrentUser(c)
+	currentUser.Name = request.Name
+	currentUser.City = request.City
+	currentUser.Introduction = request.Introduction
+	rowsAffected := currentUser.Save()
+	if rowsAffected > 0 {
+		response.Data(c, currentUser)
+	} else {
+		response.Abort500(c, "Update Failed, please try again~")
+	}
+}
