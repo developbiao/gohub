@@ -5,12 +5,18 @@ import (
 	controllers "gohub/app/http/controllers/api/v1"
 	"gohub/app/http/controllers/api/v1/auth"
 	"gohub/app/http/middlewares"
+	"gohub/pkg/config"
 	"net/http"
 )
 
 func RegisterAPIRouters(r *gin.Engine) {
 	// Test v1 group represent v1 version routes
-	v1 := r.Group("/v1")
+	var v1 *gin.RouterGroup
+	if len(config.Get("app.api_domain")) == 0 {
+		v1 = r.Group("/api/v1")
+	} else {
+		v1 = r.Group("/v1")
+	}
 
 	// Global limiter middleware: every hour limit 60 reqs
 	v1.Use(middlewares.LimitIP("200-H"))

@@ -22,6 +22,9 @@ func init() {
 			// Url
 			"url": config.Env("APP_URL", "http://localhost:3000"),
 
+			// API DOMAIN
+			"api_domain": config.Env("API_DOMAIN"),
+
 			// Timezone
 			"timezone": config.Env("TIMEZONE", "Asia/Shanghai"),
 		}
