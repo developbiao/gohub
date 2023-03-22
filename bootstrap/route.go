@@ -18,7 +18,8 @@ func SetupRoute(router *gin.Engine) {
 	// Registration API route
 	setup404Handler(router)
 
-	router.Static("/public", "./public")
+	// Step public resource
+	router.Static("/upload", "./public/upload")
 }
 
 func registerGlobalMiddleWare(router *gin.Engine) {

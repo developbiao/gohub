@@ -2,6 +2,7 @@ package file
 
 import (
 	"fmt"
+	"github.com/disintegration/imaging"
 	"github.com/gin-gonic/gin"
 	"gohub/pkg/app"
 	"gohub/pkg/auth"
@@ -51,7 +52,22 @@ func SaveUploadAvatar(c *gin.Context, file *multipart.FileHeader) (string, error
 	if err := c.SaveUploadedFile(file, avatarPath); err != nil {
 		return avatar, err
 	}
-	return avatarPath, nil
+
+	// Crop picture
+	img, err := imaging.Open(avatarPath, imaging.AutoOrientation(true))
+	if err != nil {
+		return avatar, err
+	}
+	resizeAvatar := imaging.Thumbnail(img, 256, 256, imaging.Lanczos)
+	resizeAvatarName := randomNameForUploadFile(file)
+	resizeAvatarPath := publicPath + dirName + resizeAvatarName
+	err = imaging.Save(resizeAvatar, resizeAvatarPath)
+	if err != nil {
+		return avatar, nil
+	}
+	// Remove old image
+	os.Remove(avatarPath)
+	return dirName + resizeAvatarName, nil
 }
 
 func randomNameForUploadFile(file *multipart.FileHeader) string {
