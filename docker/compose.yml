@@ -1,0 +1,41 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:5.7
+    env_file:
+      - .env
+    container_name: skeleton-mysql
+    restart: always
+    environment:
+      MYSQL_USER: homestead
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+      TZ: "$TZ"
+
+    networks:
+      - default
+    ports:
+      - "3306:3306"
+    volumes:
+      - ${DATA_DIR}/mysql_data:/var/lib/mysql:rw
+      # - /home/gongbiao/docker/skeleton/services/mysql/conf.d:/etc/mysql/conf.d/:ro  
+      - ${MYSQL5_CONF_DIR}:/etc/mysql/conf.d/:ro  
+      - ${MYSQL5_LOG_DIR}:/var/log/mysql/:rw
+
+  redis:
+    image: redis
+    env_file:
+      - .env
+    container_name: skeleton-redis
+    restart: always
+    entrypoint: ["redis-server", "/etc/redis.conf"]
+    environment:
+      TZ: "Asia/Shanghai"
+    networks:
+      - default
+    ports:
+      - "6379:6379"
+    volumes:
+      - ${DATA_DIR}/redis_data:/data/:rw
+      - ${REDIS_CONF_FILE}:/etc/redis.conf:ro
+
